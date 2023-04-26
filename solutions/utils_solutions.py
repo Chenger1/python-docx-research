@@ -14,3 +14,7 @@ first_section.top_margin = Mm(0)
 first_section.bottom_margin = Mm(0)
 first_section.header_distance = Mm(0)
 first_section.footer_distance = Mm(0)
+
+
+# Access section Header
+header = document.sections[0].header

@@ -16,7 +16,18 @@ def insert_paragraph_after(paragraph, text=None, style=None):
 
 
 # Insert paragraph at specific position
+# You have to insert content in reverse order
 def insert_at_position(text, position, base_paragraph):
-    insert_paragraph_after(base_paragraph, text)
+    paragraph = insert_paragraph_after(base_paragraph, text)
     for i in range(position+1):
         insert_paragraph_after(base_paragraph, "")
+    return paragraph
+
+
+# Delete parapgraph
+# Original answer https://github.com/python-openxml/python-docx/issues/33#issuecomment-77661907
+# Read comment because solution has some caveats
+def delete_paragraph(paragraph):
+    p = paragraph._element
+    p.getparent().remove(p)
+    p._p = p._element = None
