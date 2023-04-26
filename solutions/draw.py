@@ -2,6 +2,8 @@ from docx.oxml.shared import OxmlElement
 from docx.oxml.ns import qn
 
 
+
+# Original Answer https://github.com/python-openxml/python-docx/issues/105#issuecomment-442786431
 def insert_hr(paragraph):
     p = paragraph._p  # p is the <w:p> XML element
     pPr = p.get_or_add_pPr()
