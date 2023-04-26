@@ -17,6 +17,7 @@ def insert_paragraph_after(paragraph, text=None, style=None):
 
 # Insert paragraph at specific position
 # You have to insert content in reverse order
+# Created lots of useless empty paragraphs
 def insert_at_position(text, position, base_paragraph):
     paragraph = insert_paragraph_after(base_paragraph, text)
     for i in range(position+1):
@@ -31,3 +32,13 @@ def delete_paragraph(paragraph):
     p = paragraph._element
     p.getparent().remove(p)
     p._p = p._element = None
+
+
+# DIVIDE Into columns
+# Original Answer https://github.com/python-openxml/python-docx/issues/167#issuecomment-772391447
+WNS_COLS_NUM = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}num"
+
+
+def set_number_of_columns(section, cols):
+    """ sets number of columns through xpath. """
+    section._sectPr.xpath("./w:cols")[0].set(WNS_COLS_NUM, str(cols))
