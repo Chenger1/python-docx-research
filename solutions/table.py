@@ -52,6 +52,37 @@ def set_cell_border(cell, **kwargs):
                     element.set(qn('w:{}'.format(key)), str(edge_data[key]))
 
 
+# Original Answer https://stackoverflow.com/a/55177526/10462999
+def set_cell_margins(cell, **kwargs):
+    """
+    cell:  actual cell instance you want to modify
+
+    usage:
+
+        set_cell_margins(cell, top=50, start=50, bottom=50, end=50)
+
+    provided values are in twentieths of a point (1/1440 of an inch).
+    read more here: http://officeopenxml.com/WPtableCellMargins.php
+    """
+    tc = cell._tc
+    tcPr = tc.get_or_add_tcPr()
+    tcMar = OxmlElement('w:tcMar')
+
+    for m in [
+        "top",
+        "start",
+        "bottom",
+        "end",
+    ]:
+        if m in kwargs:
+            node = OxmlElement("w:{}".format(m))
+            node.set(qn('w:w'), str(kwargs.get(m)))
+            node.set(qn('w:type'), 'dxa')
+            tcMar.append(node)
+
+    tcPr.append(tcMar)
+
+
 # Set width for column
 # Original Answer https://stackoverflow.com/a/43053996/10462999
 def set_col_widths(table, widths):
