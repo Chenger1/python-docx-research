@@ -11,6 +11,7 @@ def move_table_after(table, paragraph):
 
 # Change cell borders in table
 # Original Answer https://stackoverflow.com/a/49615968/10462999
+# Specification for Table Cells http://officeopenxml.com/WPtableBorders.php
 def set_cell_border(cell, **kwargs):
     """
     Set cell`s border
@@ -49,3 +50,14 @@ def set_cell_border(cell, **kwargs):
             for key in ["sz", "val", "color", "space", "shadow"]:
                 if key in edge_data:
                     element.set(qn('w:{}'.format(key)), str(edge_data[key]))
+
+
+# Set width for column
+# Original Answer https://stackoverflow.com/a/43053996/10462999
+def set_col_widths(table, widths):
+    #  widths = (Inches(1), Inches(2), Inches(1.5)) - Inches, Mm, Pt, Cm
+    table.autofit = False
+    table.allow_autofit = False
+    for row in table.rows:
+        for idx, width in enumerate(widths):
+            row.cells[idx].width = width

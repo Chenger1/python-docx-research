@@ -15,6 +15,19 @@ def insert_paragraph_after(paragraph, text=None, style=None):
     return new_para
 
 
+# Original Answer: https://stackoverflow.com/a/70647528/10462999
+def table_insert_paragraph_after(table):
+    """Return new `Paragraph` object inserted directly after `table`.
+
+    `table` must already be immediately followed by a paragraph. So
+    This won't work for a table followed by another table or a table
+    at the end of the document.
+    """
+    p = table._tbl.getnext()
+    paragraph = Paragraph(p, table._parent)
+    return paragraph.insert_paragraph_before()
+
+
 # Insert paragraph at specific position
 # You have to insert content in reverse order
 # Created lots of useless empty paragraphs
