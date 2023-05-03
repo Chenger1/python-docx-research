@@ -92,3 +92,24 @@ def set_col_widths(table, widths):
     for row in table.rows:
         for idx, width in enumerate(widths):
             row.cells[idx].width = width
+
+
+def insert_table_properties(table, prop_element, **kwargs):
+    """
+    insert_table_properties(
+        table,
+        "tblPr",
+        tblStyle={"val": "a"},
+        tblW={"w": "8640", "type": "dxa"}
+    )
+    """
+
+    tbl_pr = table._element.xpath(f"w:{prop_element}")
+    if not tbl_pr:
+        return
+    for key, values in kwargs.items():
+        elem = OxmlElement(f"w:{key}")
+        for prop, value in values.items():
+            elem.set(qn(f"w:{prop}"), str(value))
+
+        tbl_pr[0].append(elem)
