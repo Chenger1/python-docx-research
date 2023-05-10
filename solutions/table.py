@@ -113,3 +113,14 @@ def insert_table_properties(table, prop_element, **kwargs):
             elem.set(qn(f"w:{prop}"), str(value))
 
         tbl_pr[0].append(elem)
+
+
+def set_repeat_table_header(row):
+    """ set repeat table row on every new page
+    """
+    tr = row._tr
+    trPr = tr.get_or_add_trPr()
+    tblHeader = OxmlElement('w:tblHeader')
+    tblHeader.set(qn('w:val'), "true")
+    trPr.append(tblHeader)
+    return row
