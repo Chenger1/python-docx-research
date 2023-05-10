@@ -115,6 +115,7 @@ def insert_table_properties(table, prop_element, **kwargs):
         tbl_pr[0].append(elem)
 
 
+# Original Answer: https://github.com/python-openxml/python-docx/issues/322#issuecomment-265018856
 def set_repeat_table_header(row):
     """ set repeat table row on every new page
     """
