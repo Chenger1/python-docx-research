@@ -61,27 +61,33 @@ def set_number_of_columns(section, cols):
 
 # Original Answer: https://stackoverflow.com/a/59786239
 # On some cases you may need to edit functions to apply special styles
-def add_bookmark(paragraph, bookmark_text, bookmark_name):
+def add_bookmark(paragraph, bookmark_text, bookmark_name, run=None):
     # run = paragraph.add_run()
     # tag = run._r  # some versions of editors require run._r instead of xpath
-    tag = paragraph._element.xpath("//w:p")[-1]
+    # tag = paragraph._element.xpath("//w:p")[-1]  # in some cases
+    tag = paragraph._element
     start = OxmlElement('w:bookmarkStart')
-    start.set(qn('w:id'), '0')
+    start.set(qn('w:id'), '60')  # should be unique for each bookmark
     start.set(qn('w:name'), bookmark_name)
+    start.set(qn('w:colFirst'), "0")
+    start.set(qn('w:colLast'), "0")
     tag.append(start)
 
-    text = OxmlElement('w:r')
-    text.text = bookmark_text
-    tag.append(text)
+    if run:  # if we have to add bookmark to existing paragraph
+        tag.append(run._element)
+    else:
+        text = OxmlElement('w:r')
+        text.text = bookmark_text
+        tag.append(text)
 
     end = OxmlElement('w:bookmarkEnd')
-    end.set(qn('w:id'), '0')
+    end.set(qn('w:id'), '60')
     end.set(qn('w:name'), bookmark_name)
     tag.append(end)
 
 
 # Original Answer: https://stackoverflow.com/a/59786239
-def add_link(paragraph, link_to, text, tool_tip=None):
+def add_link(paragraph, link_to, text, tool_tip=None, run=None):
     # create hyperlink node
     hyperlink = OxmlElement('w:hyperlink')
 
@@ -92,9 +98,14 @@ def add_link(paragraph, link_to, text, tool_tip=None):
         # set attribute for link to bookmark
         hyperlink.set(qn('w:tooltip'), tool_tip,)
 
-    new_run = OxmlElement('w:r')
+    if run:   # if we have to add bookmark to existing paragraph
+        new_run = run._element
+    else:
+        new_run = OxmlElement('w:r')
+        new_run.text = text
     rPr = OxmlElement('w:rPr')
     new_run.append(rPr)
-    new_run.text = text
     hyperlink.append(new_run)
     paragraph._p.append(hyperlink)
+    # r = paragraph.add_run()
+    # r._r.append(hyperlink)
