@@ -92,6 +92,8 @@ def set_col_widths(table, widths):
     for row in table.rows:
         for idx, width in enumerate(widths):
             row.cells[idx].width = width
+    for col, width in zip(table.columns, widths):  # some editors respect per cell width, another per col width
+        col.width = width
 
 
 def insert_table_properties(table, prop_element, **kwargs):
