@@ -1,7 +1,7 @@
 from docx.text.paragraph import Paragraph
 from docx.oxml.xmlchemy import OxmlElement
 from docx.oxml.ns import qn
-from docx.enum.dml import MSO_THEME_COLOR_INDEX
+from docx.shared import Pt, Inches
 
 
 # Original Answer: https://stackoverflow.com/questions/48663788/python-docx-insert-a-paragraph-after
@@ -109,3 +109,19 @@ def add_link(paragraph, link_to, text, tool_tip=None, run=None):
     paragraph._p.append(hyperlink)
     # r = paragraph.add_run()
     # r._r.append(hyperlink)
+
+
+# Set list of items in two columns
+# IMPORTANT. This is a hack. For right realisation should make research in open xml specification
+def insert_two_columns(list_of_items, prev_paragraph):
+    prev_paragraph = prev_paragraph
+    for index, item in enumerate(list_of_items, start=1):
+        subgroup_paragraph = insert_paragraph_after(prev_paragraph, "")
+        subgroup_paragraph.style = "addition_header"
+        subgroup_paragraph.add_run(item)
+        paragraph_format = subgroup_paragraph.paragraph_format
+        paragraph_format.space_after = Pt(2)
+        if index % 2 == 0:
+            paragraph_format.left_indent = Inches(1)
+        else:
+            paragraph_format.left_indent = Inches(4)
