@@ -88,6 +88,8 @@ def set_cell_margins(cell, **kwargs):
 def set_col_widths(table, widths):
     table.autofit = False
     table.allow_autofit = False
+
+    # This is improvement to speed up iterating
     table_cells = table._cells
     for row_index in range(len(table.rows)):
         row_cells = table_cells[row_index*2:(row_index+1)*2]
