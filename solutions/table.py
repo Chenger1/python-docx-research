@@ -86,12 +86,14 @@ def set_cell_margins(cell, **kwargs):
 # Set width for column
 # Original Answer https://stackoverflow.com/a/43053996/10462999
 def set_col_widths(table, widths):
-    #  widths = (Inches(1), Inches(2), Inches(1.5)) - Inches, Mm, Pt, Cm
     table.autofit = False
     table.allow_autofit = False
-    for row in table.rows:
-        for idx, width in enumerate(widths):
-            row.cells[idx].width = width
+    table_cells = table._cells
+    for row_index in range(len(table.rows)):
+        row_cells = table_cells[row_index*2:(row_index+1)*2]
+        row_cells[0].width = widths[0]
+        row_cells[1].width = widths[1]
+
     for col, width in zip(table.columns, widths):  # some editors respect per cell width, another per col width
         col.width = width
 
